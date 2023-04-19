@@ -60,4 +60,29 @@ public class GestionnaireCompte {
 
     }
 
+    public CompteBancaire find(Long id) {
+        CompteBancaire compte = em.find(CompteBancaire.class, id);
+        return compte;
+    }
+
+    public void transferer(Long idSource, Long idDestinataire, int soldeATransferer) {
+
+        CompteBancaire compteSource = this.find(idSource);
+        CompteBancaire compteDestinataire = this.find(idDestinataire);
+
+        this.transferer(compteSource, compteDestinataire, soldeATransferer);
+
+    }
+
+    public void transferer(CompteBancaire source, CompteBancaire destination, int montant) {
+        source.retirer(montant);
+        destination.deposer(montant);
+        update(source);
+        update(destination);
+    }
+
+    public CompteBancaire update(CompteBancaire compteBancaire) {
+        return em.merge(compteBancaire);
+    }
+
 }
