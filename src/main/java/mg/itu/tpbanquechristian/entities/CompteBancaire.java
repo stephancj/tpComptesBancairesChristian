@@ -4,15 +4,15 @@
  */
 package mg.itu.tpbanquechristian.entities;
 
-import java.io.Serializable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.io.Serializable;
 
 /**
  *
- * @author mcfmacbookpro2
+ * @author Stéphan J. Christian
  */
 @Entity
 public class CompteBancaire implements Serializable {
@@ -21,6 +21,7 @@ public class CompteBancaire implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String nom;
     private int solde;
 
@@ -42,6 +43,26 @@ public class CompteBancaire implements Serializable {
 
     public Long getId() {
         return id;
+    }
+
+    public CompteBancaire() {
+    }
+
+    public CompteBancaire(String nom, int solde) {
+        this.nom = nom;
+        this.solde = solde;
+    }
+
+    public void deposer(int montant) {
+        solde += montant;
+    }
+
+    public void retirer(int montant) {
+        if (montant < solde) {
+            solde -= montant;
+        } else {
+            solde = 0;
+        }
     }
 
     @Override
@@ -67,23 +88,6 @@ public class CompteBancaire implements Serializable {
     @Override
     public String toString() {
         return "mg.itu.tpbanquechristian.entities.CompteBancaire[ id=" + id + " ]";
-    }
-
-    public CompteBancaire(String nom, int solde) {
-        this.nom = nom;
-        this.solde = solde;
-    }
-
-    public void deposer(int montant) {
-        solde += montant;
-    }
-
-    public void retirer(int montant) {
-        if (montant < solde) {
-            solde -= montant;
-        } else {
-            solde = 0;
-        }
     }
 
 }
