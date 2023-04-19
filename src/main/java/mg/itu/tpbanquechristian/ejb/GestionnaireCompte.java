@@ -10,6 +10,8 @@ package mg.itu.tpbanquechristian.ejb;
  */
 import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.ejb.Stateless;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.validator.ValidatorException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -65,20 +67,13 @@ public class GestionnaireCompte {
         return compte;
     }
 
-    public void transferer(Long idSource, Long idDestinataire, int soldeATransferer) {
-
-        CompteBancaire compteSource = this.find(idSource);
-        CompteBancaire compteDestinataire = this.find(idDestinataire);
-
-        this.transferer(compteSource, compteDestinataire, soldeATransferer);
-
-    }
-
-    public void transferer(CompteBancaire source, CompteBancaire destination, int montant) {
+    public boolean transferer(CompteBancaire source, CompteBancaire destination,
+            int montant) {
         source.retirer(montant);
         destination.deposer(montant);
         update(source);
         update(destination);
+        return true;
     }
 
     public CompteBancaire update(CompteBancaire compteBancaire) {
